@@ -23,12 +23,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.className} bg-black text-white antialiased min-h-screen flex flex-col`}>
+      <body className={`${inter.className} bg-black text-white antialiased min-h-screen flex flex-col selection:bg-white selection:text-black`}>
+        {/* Futuristic Ambient Background Glow */}
+        <div className="fixed inset-0 z-[-1] h-full w-full bg-black">
+          <div className="absolute top-[-10%] left-[-10%] h-[500px] w-[500px] rounded-full bg-white/5 blur-[100px]" />
+          <div className="absolute bottom-[-10%] right-[-10%] h-[500px] w-[500px] rounded-full bg-white/5 blur-[100px]" />
+        </div>
+
         <Navbar />
-        {/* Main content takes up remaining space to push footer down */}
-        <main className="flex-grow">
+        
+        <main className="flex-grow relative z-10">
           {children}
         </main>
+        
         <Footer />
       </body>
     </html>

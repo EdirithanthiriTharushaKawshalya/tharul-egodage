@@ -12,7 +12,6 @@ import { Label } from "@/components/ui/label";
 import { Trash2, Loader2, Mail, Calendar } from "lucide-react";
 import Image from "next/image";
 
-// Interface for Portfolio Items
 interface PortfolioItem {
   id: string;
   title: string;
@@ -22,13 +21,12 @@ interface PortfolioItem {
   description: string;
 }
 
-// Interface for Contact Messages
 interface ContactMessage {
   id: string;
   name: string;
   email: string;
   message: string;
-  createdAt: any; // Firestore Timestamp
+  createdAt: any;
 }
 
 export default function AdminDashboard() {
@@ -37,7 +35,6 @@ export default function AdminDashboard() {
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [uploading, setUploading] = useState(false);
 
-  // Form State
   const [formData, setFormData] = useState({
     title: "",
     category: "weddings",
@@ -46,12 +43,10 @@ export default function AdminDashboard() {
     description: "",
   });
 
-  // Initial Data Fetch
   useEffect(() => {
     Promise.all([fetchItems(), fetchMessages()]).then(() => setLoading(false));
   }, []);
 
-  // --- 1. FETCH FUNCTIONS ---
   const fetchItems = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "portfolio"));
@@ -67,7 +62,6 @@ export default function AdminDashboard() {
 
   const fetchMessages = async () => {
     try {
-      // Order by creation time (Newest First)
       const q = query(collection(db, "contacts"), orderBy("createdAt", "desc"));
       const querySnapshot = await getDocs(q);
       const data: ContactMessage[] = [];
@@ -80,7 +74,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // --- 2. ACTION FUNCTIONS ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setUploading(true);
@@ -111,13 +104,11 @@ export default function AdminDashboard() {
     }
   };
 
-  // Helper to format Firestore Timestamp
   const formatDate = (timestamp: any) => {
     if (!timestamp) return "Unknown Date";
-    // Handle both Firestore Timestamp objects and standard Date objects
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp.toDate();
     return date.toLocaleDateString("en-US", { 
-      year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+      year: 'numeric', month: 'short', day: 'numeric'
     });
   };
 
@@ -130,56 +121,65 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-10">
+    <div className="container max-w-5xl mx-auto px-4 pt-24 md:pt-32 pb-16">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-white">Portfolio Manager</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-white">Dashboard</h1>
       </div>
 
       <Tabs defaultValue="messages" className="w-full">
-        <TabsList className="bg-gray-900 border border-white/10 grid w-full grid-cols-3">
-          <TabsTrigger value="messages">Messages ({messages.length})</TabsTrigger>
-          <TabsTrigger value="add">Add Item</TabsTrigger>
-          <TabsTrigger value="manage">Manage Portfolio</TabsTrigger>
+        {/* FIX: Use Grid cols-3 to force horizontal layout on mobile */}
+        <TabsList className="bg-white/5 border border-white/10 p-1 rounded-2xl w-full grid grid-cols-3 h-auto">
+          <TabsTrigger value="messages" className="rounded-xl py-3 text-xs md:text-sm data-[state=active]:bg-white data-[state=active]:text-black">
+            Messages <span className="hidden sm:inline ml-1">({messages.length})</span>
+          </TabsTrigger>
+          <TabsTrigger value="add" className="rounded-xl py-3 text-xs md:text-sm data-[state=active]:bg-white data-[state=active]:text-black">
+            Add New
+          </TabsTrigger>
+          <TabsTrigger value="manage" className="rounded-xl py-3 text-xs md:text-sm data-[state=active]:bg-white data-[state=active]:text-black">
+            Manage
+          </TabsTrigger>
         </TabsList>
 
-        {/* TAB 1: MESSAGES (Client Contacts) */}
+        {/* MESSAGES TAB */}
         <TabsContent value="messages" className="mt-6 space-y-4">
           {messages.length === 0 && (
-            <p className="text-center text-gray-500 py-10">No messages yet.</p>
+            <p className="text-center text-gray-500 py-10 bg-white/5 rounded-[32px]">No messages yet.</p>
           )}
           
           <div className="grid grid-cols-1 gap-4">
             {messages.map((msg) => (
-              <Card key={msg.id} className="bg-gray-900 border-white/10">
-                <CardHeader className="pb-3">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-white text-lg">{msg.name}</CardTitle>
-                      <CardDescription className="text-gray-400 flex items-center gap-2 mt-1">
-                        <Mail className="h-3 w-3" /> {msg.email}
+              <Card key={msg.id} className="bg-white/5 border-white/10 rounded-[24px]">
+                <CardHeader className="pb-3 p-4 md:p-6">
+                  <div className="flex flex-col sm:flex-row justify-between items-start gap-2">
+                    <div className="w-full">
+                      <div className="flex justify-between items-start">
+                        <CardTitle className="text-white text-lg truncate pr-2">{msg.name}</CardTitle>
+                         <p className="text-[10px] text-gray-500 flex items-center gap-1 whitespace-nowrap">
+                          <Calendar className="h-3 w-3" />
+                          {formatDate(msg.createdAt)}
+                        </p>
+                      </div>
+                      <CardDescription className="text-gray-400 flex items-center gap-2 mt-1 text-sm">
+                        <Mail className="h-3 w-3" /> <span className="truncate">{msg.email}</span>
                       </CardDescription>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-xs text-gray-500 flex items-center justify-end gap-1 mb-2">
-                        <Calendar className="h-3 w-3" />
-                        {formatDate(msg.createdAt)}
-                      </p>
-                      <Button 
-                        variant="destructive" 
-                        size="sm" 
-                        onClick={() => handleDeleteMessage(msg.id)}
-                        className="h-8"
-                      >
-                        <Trash2 className="h-3 w-3 mr-2" /> Delete
-                      </Button>
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="p-3 bg-black/40 rounded-md border border-white/5">
+                <CardContent className="p-4 md:p-6 pt-0">
+                  <div className="p-4 bg-black/30 rounded-xl border border-white/5 mb-3">
                     <p className="text-gray-300 text-sm whitespace-pre-wrap leading-relaxed">
                       {msg.message}
                     </p>
+                  </div>
+                  <div className="flex justify-end">
+                     <Button 
+                        variant="destructive" 
+                        size="sm" 
+                        onClick={() => handleDeleteMessage(msg.id)}
+                        className="h-8 rounded-full text-xs"
+                      >
+                        <Trash2 className="h-3 w-3 mr-2" /> Delete
+                      </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -187,9 +187,9 @@ export default function AdminDashboard() {
           </div>
         </TabsContent>
 
-        {/* TAB 2: ADD NEW ITEM */}
+        {/* ADD ITEM TAB */}
         <TabsContent value="add">
-          <Card className="bg-gray-900 border-white/10 mt-6">
+          <Card className="bg-white/5 border-white/10 mt-6 rounded-[32px] p-3 md:p-6">
             <CardHeader>
               <CardTitle className="text-white">Add Portfolio Item</CardTitle>
             </CardHeader>
@@ -197,19 +197,19 @@ export default function AdminDashboard() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Title</Label>
+                    <Label className="text-gray-300 ml-1">Title</Label>
                     <Input 
                       required
                       value={formData.title}
                       onChange={(e) => setFormData({...formData, title: e.target.value})}
-                      className="bg-black border-white/20 text-white" 
+                      className="bg-black/30 border-white/10 text-white rounded-xl" 
                       placeholder="Event Name" 
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Category</Label>
+                    <Label className="text-gray-300 ml-1">Category</Label>
                     <select 
-                      className="flex h-10 w-full rounded-md border border-white/20 bg-black px-3 py-2 text-sm text-white"
+                      className="flex h-10 w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2 text-sm text-white"
                       value={formData.category}
                       onChange={(e) => setFormData({...formData, category: e.target.value})}
                     >
@@ -223,39 +223,39 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-gray-300">Image URL (Direct Link)</Label>
+                  <Label className="text-gray-300 ml-1">Image URL</Label>
                   <Input 
                     required
                     value={formData.image}
                     onChange={(e) => setFormData({...formData, image: e.target.value})}
-                    className="bg-black border-white/20 text-white" 
+                    className="bg-black/30 border-white/10 text-white rounded-xl" 
                     placeholder="https://images.unsplash.com/..." 
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-gray-300">Facebook Link</Label>
+                  <Label className="text-gray-300 ml-1">Facebook Link</Label>
                   <Input 
                     required
                     value={formData.link}
                     onChange={(e) => setFormData({...formData, link: e.target.value})}
-                    className="bg-black border-white/20 text-white" 
+                    className="bg-black/30 border-white/10 text-white rounded-xl" 
                     placeholder="https://facebook.com/..." 
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-gray-300">Description</Label>
+                  <Label className="text-gray-300 ml-1">Description</Label>
                   <Textarea 
                     required
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    className="bg-black border-white/20 text-white" 
+                    className="bg-black/30 border-white/10 text-white rounded-xl" 
                     placeholder="Short description..." 
                   />
                 </div>
 
-                <Button type="submit" disabled={uploading} className="bg-white text-black hover:bg-gray-200 w-full">
+                <Button type="submit" disabled={uploading} className="bg-white text-black hover:bg-gray-200 w-full rounded-full">
                   {uploading ? "Saving..." : "Add to Portfolio"}
                 </Button>
               </form>
@@ -263,26 +263,30 @@ export default function AdminDashboard() {
           </Card>
         </TabsContent>
 
-        {/* TAB 3: MANAGE PORTFOLIO */}
+        {/* MANAGE ITEMS TAB */}
         <TabsContent value="manage">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6">
             {items.length === 0 && <p className="text-gray-500">No items found.</p>}
             
             {items.map((item) => (
-              <Card key={item.id} className="bg-gray-900 border-white/10 flex flex-row overflow-hidden h-32">
-                <div className="relative w-32 h-full shrink-0">
+              // FIX: Force flex-row so image is always side-by-side with text
+              <Card key={item.id} className="bg-white/5 border-white/10 flex flex-row overflow-hidden h-24 rounded-2xl">
+                {/* Compact Image Side */}
+                <div className="relative w-24 h-full shrink-0 bg-gray-900">
                   <Image src={item.image} alt={item.title} fill className="object-cover" />
                 </div>
-                <div className="flex-1 p-4 flex justify-between items-center min-w-0">
-                  <div className="truncate pr-4">
-                    <h4 className="text-white font-bold truncate">{item.title}</h4>
-                    <p className="text-gray-500 text-sm capitalize">{item.category}</p>
+                
+                {/* Compact Content Side */}
+                <div className="flex-1 p-3 flex justify-between items-center min-w-0">
+                  <div className="truncate pr-2">
+                    <h4 className="text-white font-bold text-sm truncate">{item.title}</h4>
+                    <p className="text-gray-500 text-xs capitalize mt-1">{item.category}</p>
                   </div>
                   <Button 
                     variant="destructive" 
                     size="icon" 
                     onClick={() => handleDeleteItem(item.id)}
-                    className="shrink-0"
+                    className="shrink-0 rounded-full h-8 w-8"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>

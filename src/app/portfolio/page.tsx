@@ -5,7 +5,7 @@ import Image from "next/image";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Loader2 } from "lucide-react";
@@ -23,7 +23,6 @@ interface PortfolioItem {
 export default function PortfolioPage() {
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
-  // ADDED "birthdays" HERE
   const categories = ["all", "weddings", "events", "portraits", "graduations", "birthdays"];
 
   useEffect(() => {
@@ -47,65 +46,68 @@ export default function PortfolioPage() {
 
   if (loading) {
     return (
-      <div className="flex h-[50vh] items-center justify-center text-white">
+      <div className="flex h-screen items-center justify-center text-white">
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-16">
+    <div className="container mx-auto px-4 pt-24 md:pt-32 pb-16">
       <FadeIn>
-        <h1 className="text-4xl font-bold text-white mb-8 text-center">Selected Works</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 md:mb-12 text-center tracking-tight">Selected Works</h1>
       </FadeIn>
 
       <Tabs defaultValue="all" className="w-full">
-        <div className="flex justify-center mb-10">
-          <TabsList className="bg-black border border-white/10 flex flex-wrap justify-center h-auto gap-2">
-            {categories.map((cat) => (
-              <TabsTrigger 
-                key={cat} 
-                value={cat} 
-                className="capitalize data-[state=active]:bg-white data-[state=active]:text-black text-gray-400"
-              >
-                {cat}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+        <div className="flex justify-center mb-8 md:mb-16">
+          {/* SCROLLABLE TABS CONTAINER FOR MOBILE */}
+          <div className="w-full max-w-full overflow-x-auto pb-2 no-scrollbar">
+             <TabsList className="bg-white/5 backdrop-blur-md border border-white/10 p-1 rounded-[2rem] flex w-max mx-auto h-auto gap-1">
+              {categories.map((cat) => (
+                <TabsTrigger 
+                  key={cat} 
+                  value={cat} 
+                  className="capitalize rounded-full px-5 py-2 text-sm data-[state=active]:bg-white data-[state=active]:text-black text-gray-400 transition-all duration-300"
+                >
+                  {cat}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
         </div>
 
         {categories.map((cat) => (
           <TabsContent key={cat} value={cat}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {items
                 .filter((item) => cat === "all" || item.category.toLowerCase() === cat)
                 .map((item, index) => (
-                  <FadeIn key={item.id} delay={index * 0.1}>
-                    <Card className="bg-gray-900 border border-white/10 overflow-hidden flex flex-col h-full hover:border-white/30 transition-colors">
-                      <div className="relative w-full aspect-video">
+                  <FadeIn key={item.id} delay={index * 0.05}>
+                    <Card className="bg-gray-900/40 backdrop-blur-sm border border-white/10 rounded-[32px] overflow-hidden flex flex-col h-full hover:border-white/30 transition-all duration-500 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] group">
+                      <div className="relative w-full aspect-[4/3] overflow-hidden">
                         <Image
                           src={item.image}
                           alt={item.title}
                           fill
-                          className="object-cover"
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
-                        <Badge className="absolute top-3 right-3 bg-black/70 text-white hover:bg-black capitalize">
+                        <Badge className="absolute top-4 right-4 bg-black/50 backdrop-blur-md border border-white/10 text-white capitalize rounded-full px-3">
                           {item.category}
                         </Badge>
                       </div>
 
-                      <div className="flex flex-col flex-grow p-6 space-y-4">
+                      <div className="flex flex-col flex-grow p-6 md:p-8 space-y-4">
                         <div>
-                          <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                          <p className="text-gray-400 text-sm line-clamp-3">
+                          <h3 className="text-2xl font-bold text-white mb-2 truncate">{item.title}</h3>
+                          <p className="text-gray-400 text-sm line-clamp-3 leading-relaxed font-light">
                             {item.description}
                           </p>
                         </div>
                         
-                        <div className="mt-auto pt-2">
+                        <div className="mt-auto pt-4">
                           <a href={item.link} target="_blank" rel="noopener noreferrer">
-                            <Button className="w-full bg-white text-black hover:bg-gray-200 gap-2">
-                              View Facebook Album <ExternalLink className="h-4 w-4" />
+                            <Button className="w-full rounded-full bg-white text-black hover:bg-gray-200 flex items-center gap-2 py-6">
+                              View Album <ExternalLink className="h-4 w-4" />
                             </Button>
                           </a>
                         </div>
@@ -115,7 +117,9 @@ export default function PortfolioPage() {
                 ))}
             </div>
              {items.filter((item) => cat === "all" || item.category.toLowerCase() === cat).length === 0 && (
-               <p className="text-center text-gray-500 mt-10">No items found in this category.</p>
+               <div className="text-center py-20 bg-white/5 rounded-[32px] border border-white/5">
+                 <p className="text-gray-500">No items found in this category.</p>
+               </div>
             )}
           </TabsContent>
         ))}
