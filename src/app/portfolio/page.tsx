@@ -6,13 +6,15 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Loader2 } from "lucide-react";
+import FadeIn from "@/components/FadeIn";
 
-// Define the interface for our data
 interface PortfolioItem {
   id: string;
   title: string;
+  description: string;
   category: string;
   image: string;
   link: string;
@@ -21,9 +23,9 @@ interface PortfolioItem {
 export default function PortfolioPage() {
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const categories = ["all", "weddings", "events", "portraits", "graduations"];
+  // ADDED "birthdays" HERE
+  const categories = ["all", "weddings", "events", "portraits", "graduations", "birthdays"];
 
-  // Fetch data from Firebase on load
   useEffect(() => {
     const fetchPortfolio = async () => {
       try {
@@ -53,7 +55,9 @@ export default function PortfolioPage() {
 
   return (
     <div className="container mx-auto px-4 py-16">
-      <h1 className="text-4xl font-bold text-white mb-8 text-center">Selected Works</h1>
+      <FadeIn>
+        <h1 className="text-4xl font-bold text-white mb-8 text-center">Selected Works</h1>
+      </FadeIn>
 
       <Tabs defaultValue="all" className="w-full">
         <div className="flex justify-center mb-10">
@@ -72,35 +76,45 @@ export default function PortfolioPage() {
 
         {categories.map((cat) => (
           <TabsContent key={cat} value={cat}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {items
                 .filter((item) => cat === "all" || item.category.toLowerCase() === cat)
-                .map((item) => (
-                  <a key={item.id} href={item.link} target="_blank" rel="noopener noreferrer" className="group">
-                    <Card className="bg-gray-900 border-0 overflow-hidden relative">
-                      <CardContent className="p-0 aspect-[4/3] relative">
+                .map((item, index) => (
+                  <FadeIn key={item.id} delay={index * 0.1}>
+                    <Card className="bg-gray-900 border border-white/10 overflow-hidden flex flex-col h-full hover:border-white/30 transition-colors">
+                      <div className="relative w-full aspect-video">
                         <Image
                           src={item.image}
                           alt={item.title}
                           fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+                          className="object-cover"
                         />
-                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 text-center">
+                        <Badge className="absolute top-3 right-3 bg-black/70 text-white hover:bg-black capitalize">
+                          {item.category}
+                        </Badge>
+                      </div>
+
+                      <div className="flex flex-col flex-grow p-6 space-y-4">
+                        <div>
                           <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                          <Badge variant="outline" className="text-white border-white mb-4 capitalize">
-                            {item.category}
-                          </Badge>
-                          <div className="flex items-center text-sm text-gray-300">
-                            View on Facebook <ExternalLink className="ml-2 h-4 w-4" />
-                          </div>
+                          <p className="text-gray-400 text-sm line-clamp-3">
+                            {item.description}
+                          </p>
                         </div>
-                      </CardContent>
+                        
+                        <div className="mt-auto pt-2">
+                          <a href={item.link} target="_blank" rel="noopener noreferrer">
+                            <Button className="w-full bg-white text-black hover:bg-gray-200 gap-2">
+                              View Facebook Album <ExternalLink className="h-4 w-4" />
+                            </Button>
+                          </a>
+                        </div>
+                      </div>
                     </Card>
-                  </a>
+                  </FadeIn>
                 ))}
             </div>
-            {/* Empty State Message */}
-            {items.filter((item) => cat === "all" || item.category.toLowerCase() === cat).length === 0 && (
+             {items.filter((item) => cat === "all" || item.category.toLowerCase() === cat).length === 0 && (
                <p className="text-center text-gray-500 mt-10">No items found in this category.</p>
             )}
           </TabsContent>
