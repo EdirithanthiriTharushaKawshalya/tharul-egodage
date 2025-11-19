@@ -18,35 +18,53 @@ export default function ContactPage() {
             </div>
             
             <div className="space-y-4 md:space-y-6">
-              <div className="flex items-center space-x-4 md:space-x-6 p-4 md:p-6 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
-                <div className="p-3 md:p-4 rounded-full bg-black/50 border border-white/10 text-white shrink-0">
+              {/* WhatsApp / Phone Section */}
+              <a 
+                href="tel:+94707914277" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center space-x-4 md:space-x-6 p-4 md:p-6 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group"
+              >
+                <div className="p-3 md:p-4 rounded-full bg-black/50 border border-white/10 text-white shrink-0 group-hover:bg-white group-hover:text-black transition-colors">
                   <Phone className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
                 <div className="overflow-hidden">
-                  <p className="text-xs text-gray-500 uppercase tracking-wider">WhatsApp</p>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider group-hover:text-gray-300">WhatsApp / Phone</p>
                   <p className="text-base md:text-lg font-medium text-white truncate">+94 70 791 4277</p>
                 </div>
-              </div>
+              </a>
 
-              <div className="flex items-center space-x-4 md:space-x-6 p-4 md:p-6 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
-                <div className="p-3 md:p-4 rounded-full bg-black/50 border border-white/10 text-white shrink-0">
+              {/* Instagram Section */}
+              <a 
+                href="https://www.instagram.com/tharul_photography" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center space-x-4 md:space-x-6 p-4 md:p-6 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group"
+              >
+                <div className="p-3 md:p-4 rounded-full bg-black/50 border border-white/10 text-white shrink-0 group-hover:bg-white group-hover:text-black transition-colors">
                   <Instagram className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
                 <div className="overflow-hidden">
-                  <p className="text-xs text-gray-500 uppercase tracking-wider">Instagram</p>
-                  <a href="https://www.instagram.com/tharul_photography" className="text-base md:text-lg font-medium text-white hover:underline truncate block">@tharul_egodage</a>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider group-hover:text-gray-300">Instagram</p>
+                  <p className="text-base md:text-lg font-medium text-white truncate">@tharul_egodage</p>
                 </div>
-              </div>
+              </a>
 
-              <div className="flex items-center space-x-4 md:space-x-6 p-4 md:p-6 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
-                <div className="p-3 md:p-4 rounded-full bg-black/50 border border-white/10 text-white shrink-0">
+              {/* Facebook Section */}
+              <a 
+                href="https://www.facebook.com/tharulphotography" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center space-x-4 md:space-x-6 p-4 md:p-6 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group"
+              >
+                <div className="p-3 md:p-4 rounded-full bg-black/50 border border-white/10 text-white shrink-0 group-hover:bg-white group-hover:text-black transition-colors">
                   <Facebook className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
                 <div className="overflow-hidden">
-                  <p className="text-xs text-gray-500 uppercase tracking-wider">Facebook</p>
-                  <a href="https://www.facebook.com/tharulphotography" className="text-base md:text-lg font-medium text-white hover:underline truncate block">Tharul Egodage Photography</a>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider group-hover:text-gray-300">Facebook</p>
+                  <p className="text-base md:text-lg font-medium text-white truncate">Tharul Egodage Photography</p>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
         </FadeIn>

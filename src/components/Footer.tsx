@@ -53,13 +53,17 @@ export default function Footer() {
           <div className="space-y-4">
             <h3 className="text-white font-semibold text-lg">Contact</h3>
             <ul className="space-y-3 text-gray-400 text-sm">
-              <li className="flex items-center justify-center md:justify-start gap-3">
-                <Mail className="h-4 w-4 text-white" /> 
-                <span>info@tharulegodage.com</span>
+              <li>
+                <a href="mailto:info@tharulegodage.com" className="flex items-center justify-center md:justify-start gap-3 hover:text-white transition-colors">
+                  <Mail className="h-4 w-4 text-white" /> 
+                  <span>info@tharulegodage.com</span>
+                </a>
               </li>
-              <li className="flex items-center justify-center md:justify-start gap-3">
-                <Phone className="h-4 w-4 text-white" /> 
-                <span>+94 70 791 4277</span>
+              <li>
+                <a href="tel:+94707914277" className="flex items-center justify-center md:justify-start gap-3 hover:text-white transition-colors">
+                  <Phone className="h-4 w-4 text-white" /> 
+                  <span>+94 70 791 4277</span>
+                </a>
               </li>
               <li className="flex items-center justify-center md:justify-start gap-3">
                 <MapPin className="h-4 w-4 text-white" /> 
@@ -72,22 +76,32 @@ export default function Footer() {
           <div className="space-y-4">
             <h3 className="text-white font-semibold text-lg">Follow Me</h3>
             <div className="flex justify-center md:justify-start gap-4">
-              <a href="https://www.instagram.com/tharul_egodage" className="p-3 rounded-full bg-white/5 hover:bg-white hover:text-black border border-white/10 transition-all duration-300 group">
+              <a 
+                href="https://www.instagram.com/tharul_egodage" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-3 rounded-full bg-white/5 hover:bg-white hover:text-black border border-white/10 transition-all duration-300 group"
+              >
                 <Instagram className="h-5 w-5 text-gray-300 group-hover:text-black" />
               </a>
-              <a href="https://www.facebook.com/tharulegodage" className="p-3 rounded-full bg-white/5 hover:bg-white hover:text-black border border-white/10 transition-all duration-300 group">
+              <a 
+                href="https://www.facebook.com/tharulegodage" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-3 rounded-full bg-white/5 hover:bg-white hover:text-black border border-white/10 transition-all duration-300 group"
+              >
                 <Facebook className="h-5 w-5 text-gray-300 group-hover:text-black" />
               </a>
             </div>
           </div>
         </div>
 
-        {/* --- BOTTOM SECTION: Copyright --- */}
+        {/* --- BOTTOM SECTION: Copyright & Legal --- */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500 relative z-10">
           <p>&copy; {new Date().getFullYear()} THARUL EGODAGE Photography. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>
         </div>
         

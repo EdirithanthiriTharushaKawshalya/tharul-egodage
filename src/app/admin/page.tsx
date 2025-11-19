@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-import { Trash2, Loader2, Mail, Calendar } from "lucide-react";
+import { Trash2, Loader2, Mail, Calendar, Phone } from "lucide-react"; // Added Phone icon
 import Image from "next/image";
 
 interface PortfolioItem {
@@ -25,6 +25,7 @@ interface ContactMessage {
   id: string;
   name: string;
   email: string;
+  phone?: string; // Added Phone field (optional)
   message: string;
   createdAt: any;
 }
@@ -127,7 +128,6 @@ export default function AdminDashboard() {
       </div>
 
       <Tabs defaultValue="messages" className="w-full">
-        {/* FIX: Use Grid cols-3 to force horizontal layout on mobile */}
         <TabsList className="bg-white/5 border border-white/10 p-1 rounded-2xl w-full grid grid-cols-3 h-auto">
           <TabsTrigger value="messages" className="rounded-xl py-3 text-xs md:text-sm data-[state=active]:bg-white data-[state=active]:text-black">
             Messages <span className="hidden sm:inline ml-1">({messages.length})</span>
@@ -159,9 +159,21 @@ export default function AdminDashboard() {
                           {formatDate(msg.createdAt)}
                         </p>
                       </div>
-                      <CardDescription className="text-gray-400 flex items-center gap-2 mt-1 text-sm">
-                        <Mail className="h-3 w-3" /> <span className="truncate">{msg.email}</span>
-                      </CardDescription>
+                      
+                      {/* Contact Details */}
+                      <div className="flex flex-wrap gap-3 mt-1">
+                        <CardDescription className="text-gray-400 flex items-center gap-2 text-sm">
+                          <Mail className="h-3 w-3" /> <span className="truncate">{msg.email}</span>
+                        </CardDescription>
+                        
+                        {/* Display Phone if available */}
+                        {msg.phone && (
+                          <CardDescription className="text-gray-400 flex items-center gap-2 text-sm border-l border-white/10 pl-3">
+                            <Phone className="h-3 w-3" /> <span>{msg.phone}</span>
+                          </CardDescription>
+                        )}
+                      </div>
+
                     </div>
                   </div>
                 </CardHeader>
@@ -269,7 +281,6 @@ export default function AdminDashboard() {
             {items.length === 0 && <p className="text-gray-500">No items found.</p>}
             
             {items.map((item) => (
-              // FIX: Force flex-row so image is always side-by-side with text
               <Card key={item.id} className="bg-white/5 border-white/10 flex flex-row overflow-hidden h-24 rounded-2xl">
                 {/* Compact Image Side */}
                 <div className="relative w-24 h-full shrink-0 bg-gray-900">

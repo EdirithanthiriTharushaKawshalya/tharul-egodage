@@ -22,6 +22,7 @@ export default function ContactForm() {
     const data = {
       name: formData.get("name"),
       email: formData.get("email"),
+      phone: formData.get("phone"), // Added Phone Number
       message: formData.get("message"),
       createdAt: new Date().toISOString(),
     };
@@ -40,15 +41,29 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="name" className="text-gray-300 ml-1">Name</Label>
-        <Input 
-          id="name" 
-          name="name" 
-          required 
-          placeholder="John Doe" 
-          className="bg-black/30 border-white/10 text-white focus:border-white/30 focus:bg-black/50 h-12 rounded-2xl transition-all"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <Label htmlFor="name" className="text-gray-300 ml-1">Name</Label>
+          <Input 
+            id="name" 
+            name="name" 
+            required 
+            placeholder="John Doe" 
+            className="bg-black/30 border-white/10 text-white focus:border-white/30 focus:bg-black/50 h-12 rounded-2xl transition-all"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="phone" className="text-gray-300 ml-1">Phone Number</Label>
+          <Input 
+            id="phone" 
+            name="phone" 
+            type="tel"
+            required 
+            placeholder="+1 234 567 8900" 
+            className="bg-black/30 border-white/10 text-white focus:border-white/30 focus:bg-black/50 h-12 rounded-2xl transition-all"
+          />
+        </div>
       </div>
 
       <div className="space-y-2">
