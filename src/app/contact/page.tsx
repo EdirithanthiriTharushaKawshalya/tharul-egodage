@@ -46,7 +46,7 @@ export default function ContactPage() {
                 </div>
                 <div className="overflow-hidden">
                   <p className="text-xs text-gray-500 uppercase tracking-wider group-hover:text-gray-300">Instagram</p>
-                  <p className="text-base md:text-lg font-medium text-white truncate">@tharul_egodage</p>
+                  <p className="text-base md:text-lg font-medium text-white truncate">@tharul_photography</p>
                 </div>
               </a>
 
