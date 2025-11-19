@@ -1,65 +1,76 @@
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 export default function Home() {
+  // Placeholder images - replace with real URLs later
+  const featuredImages = [
+    "https://images.unsplash.com/photo-1511285560982-1351cdeb9821?q=80&w=800&auto=format&fit=crop", // Wedding
+    "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop", // Event
+    "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=800&auto=format&fit=crop", // Portrait
+  ];
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex flex-col items-center justify-center space-y-20 py-20 px-4">
+      {/* Hero Section */}
+      <section className="text-center space-y-6 max-w-2xl">
+        <h1 className="text-5xl font-bold tracking-tight text-white sm:text-7xl">
+          Capturing Life's <br />
+          <span className="text-gray-500">Fleeting Moments.</span>
+        </h1>
+        <p className="text-lg text-gray-400">
+          Hi, I'm [Name]. A professional photographer specializing in events, weddings, and portraits. 
+          Let's tell your story through my lens.
+        </p>
+        <div className="flex justify-center gap-4 pt-4">
+          <Link href="/portfolio">
+            <Button className="bg-white text-black hover:bg-gray-200">View Work</Button>
+          </Link>
+          <Link href="/contact">
+            <Button variant="outline" className="border-white/20 text-white">Book Now</Button>
+          </Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Swipe Section (Carousel) */}
+      <section className="w-full max-w-4xl">
+        <div className="mb-8 flex items-center justify-between">
+          <h2 className="text-2xl font-semibold text-white">Featured Shots</h2>
+          <span className="text-sm text-gray-500">Swipe to explore &rarr;</span>
         </div>
-      </main>
+        
+        <Carousel className="w-full">
+          <CarouselContent>
+            {featuredImages.map((src, index) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <div className="p-1">
+                  <Card className="border-0 bg-transparent">
+                    <CardContent className="flex aspect-[3/4] items-center justify-center p-0 overflow-hidden rounded-lg">
+                      <Image 
+                        src={src} 
+                        alt={`Featured ${index}`} 
+                        width={400} 
+                        height={600} 
+                        className="object-cover w-full h-full transition-transform hover:scale-105"
+                      />
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="bg-black/50 text-white border-white/20" />
+          <CarouselNext className="bg-black/50 text-white border-white/20" />
+        </Carousel>
+      </section>
     </div>
   );
 }
