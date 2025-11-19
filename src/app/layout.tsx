@@ -9,8 +9,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: "Lumina Lens | Portfolio",
-    template: "%s | Lumina Lens",
+    default: "THARUL EGODAGE | Portfolio",
+    template: "%s | THARUL EGODAGE",
   },
   description: "Professional photography portfolio specializing in weddings, events, and portraits.",
   keywords: ["Photography", "Portfolio", "Weddings", "Events", "Portraits"],
