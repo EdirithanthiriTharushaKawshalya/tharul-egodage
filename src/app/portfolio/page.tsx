@@ -25,7 +25,9 @@ export default function PortfolioPage() {
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const categories = ["all", "weddings", "events", "portraits", "graduations", "birthdays"];
+  
+  // Updated Category Order
+  const categories = ["all", "portraits", "birthdays", "weddings", "events", "fashion", "graduations"];
 
   useEffect(() => {
     const fetchPortfolio = async () => {

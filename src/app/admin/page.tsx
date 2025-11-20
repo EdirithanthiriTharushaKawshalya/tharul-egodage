@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-import { Trash2, Loader2, Mail, Calendar, Phone } from "lucide-react"; // Added Phone icon
+import { Trash2, Loader2, Mail, Calendar, Phone } from "lucide-react"; 
 import Image from "next/image";
 
 interface PortfolioItem {
@@ -25,7 +25,7 @@ interface ContactMessage {
   id: string;
   name: string;
   email: string;
-  phone?: string; // Added Phone field (optional)
+  phone?: string;
   message: string;
   createdAt: any;
 }
@@ -38,7 +38,7 @@ export default function AdminDashboard() {
 
   const [formData, setFormData] = useState({
     title: "",
-    category: "weddings",
+    category: "portraits", // Changed default to match first item in your list
     image: "",
     link: "",
     description: "",
@@ -81,7 +81,7 @@ export default function AdminDashboard() {
     try {
       await addDoc(collection(db, "portfolio"), formData);
       alert("Item added successfully!");
-      setFormData({ title: "", category: "weddings", image: "", link: "", description: "" });
+      setFormData({ title: "", category: "portraits", image: "", link: "", description: "" });
       fetchItems();
     } catch (error) {
       console.error("Error adding document: ", error);
@@ -160,13 +160,11 @@ export default function AdminDashboard() {
                         </p>
                       </div>
                       
-                      {/* Contact Details */}
                       <div className="flex flex-wrap gap-3 mt-1">
                         <CardDescription className="text-gray-400 flex items-center gap-2 text-sm">
                           <Mail className="h-3 w-3" /> <span className="truncate">{msg.email}</span>
                         </CardDescription>
                         
-                        {/* Display Phone if available */}
                         {msg.phone && (
                           <CardDescription className="text-gray-400 flex items-center gap-2 text-sm border-l border-white/10 pl-3">
                             <Phone className="h-3 w-3" /> <span>{msg.phone}</span>
@@ -225,11 +223,13 @@ export default function AdminDashboard() {
                       value={formData.category}
                       onChange={(e) => setFormData({...formData, category: e.target.value})}
                     >
+                      {/* UPDATED ORDER */}
+                      <option value="portraits">Portraits</option>
+                      <option value="birthdays">Birthdays</option>
                       <option value="weddings">Weddings</option>
                       <option value="events">Events</option>
-                      <option value="portraits">Portraits</option>
+                      <option value="fashion">Fashion</option>
                       <option value="graduations">Graduations</option>
-                      <option value="birthdays">Birthdays</option>
                     </select>
                   </div>
                 </div>
