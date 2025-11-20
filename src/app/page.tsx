@@ -16,7 +16,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import FadeIn from "@/components/FadeIn";
-import { Loader2, ExternalLink, ArrowRight } from "lucide-react";
+import { Loader2, ExternalLink, ArrowRight, Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 
 interface PortfolioItem {
@@ -28,9 +28,45 @@ interface PortfolioItem {
   description: string;
 }
 
+// --- MOCK REVIEWS DATA ---
+const reviews = [
+  {
+    id: 1,
+    name: "Sarah Jenkins",
+    rating: 5,
+    text: "Tharul captured our wedding beautifully! The photos are stunning and he made us feel so comfortable throughout the day.",
+    date: "2 months ago"
+  },
+  {
+    id: 2,
+    name: "David Perera",
+    rating: 5,
+    text: "Highly recommend for any event coverage. Professional, punctual, and the final edits were delivered faster than expected.",
+    date: "1 month ago"
+  },
+  {
+    id: 3,
+    name: "Michelle & Tom",
+    rating: 5,
+    text: "We did a couple shoot in Galle Fort and the results are magical. He knows all the best hidden spots for great lighting!",
+    date: "3 weeks ago"
+  },
+  {
+    id: 4,
+    name: "TechCorp Lanka",
+    rating: 5,
+    text: "Excellent corporate event photography. Captured the essence of our summit perfectly.",
+    date: "5 months ago"
+  }
+];
+
 export default function Home() {
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Ref for the review scroll container
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   const plugin = useRef(
     Autoplay({ delay: 2500, stopOnInteraction: false })
@@ -57,11 +93,41 @@ export default function Home() {
     fetchFeatured();
   }, []);
 
+  // Auto Scroll Logic for Reviews
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      if (scrollRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        // If we are near the end, scroll back to start, else scroll right
+        if (scrollLeft + clientWidth >= scrollWidth - 10) {
+            scrollRef.current.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+            scrollRef.current.scrollBy({ left: 320, behavior: "smooth" });
+        }
+      }
+    }, 2000); // 2 seconds
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -320, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 320, behavior: "smooth" });
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center space-y-20 md:space-y-32 pt-32 md:pt-40 pb-20 px-4 overflow-x-hidden">
+    <div className="flex flex-col items-center justify-center space-y-32 md:space-y-48 pt-32 md:pt-40 pb-20 px-4 overflow-x-hidden">
       {/* Hero Section */}
       <section className="text-center space-y-6 md:space-y-8 max-w-4xl relative px-2">
-        {/* Decorative Glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] md:w-[300px] h-[200px] md:h-[300px] bg-white/10 blur-[80px] md:blur-[120px] rounded-full pointer-events-none" />
 
         <FadeIn delay={0.1}>
@@ -97,7 +163,7 @@ export default function Home() {
       </section>
 
       {/* Swipe Section */}
-      <FadeIn delay={0.2} className="w-full flex flex-col items-center">
+      <FadeIn delay={0.2} className="w-full flex flex-col items-center relative z-10">
         <section className="w-full max-w-7xl">
           <div className="mb-8 md:mb-12 flex flex-col sm:flex-row items-center justify-between px-6 gap-2 text-center sm:text-left">
             <h2 className="text-2xl md:text-3xl font-semibold text-white tracking-tight">Featured Work</h2>
@@ -128,8 +194,6 @@ export default function Home() {
                 {items.map((item) => (
                   <CarouselItem key={item.id} className="pl-4 md:pl-6 basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/3">
                     <Card className="h-full border border-white/10 bg-gray-900/40 backdrop-blur-sm rounded-[32px] overflow-hidden flex flex-col hover:border-white/30 transition-all duration-500 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] group">
-                      
-                      {/* Image */}
                       <div className="relative w-full aspect-[4/3] overflow-hidden">
                         <Image
                           src={item.image}
@@ -142,8 +206,6 @@ export default function Home() {
                           {item.category}
                         </Badge>
                       </div>
-
-                      {/* Content */}
                       <div className="flex flex-col flex-grow p-6 md:p-8 space-y-4">
                         <div>
                           <h3 className="text-xl md:text-2xl font-bold text-white mb-2 truncate">{item.title}</h3>
@@ -151,7 +213,6 @@ export default function Home() {
                             {item.description}
                           </p>
                         </div>
-                        
                         <div className="mt-auto pt-4">
                           <a href={item.link} target="_blank" rel="noopener noreferrer">
                             <Button variant="ghost" className="w-full rounded-full border border-white/10 hover:bg-white hover:text-black hover:border-transparent text-gray-300 group-hover:bg-white group-hover:text-black transition-all duration-300 flex justify-between items-center px-6">
@@ -164,14 +225,116 @@ export default function Home() {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              
-              {/* Hide arrows on mobile, show on desktop */}
               <CarouselPrevious className="hidden lg:flex -left-12 bg-black text-white border-white/20 hover:bg-white hover:text-black" />
               <CarouselNext className="hidden lg:flex -right-12 bg-black text-white border-white/20 hover:bg-white hover:text-black" />
             </Carousel>
           )}
         </section>
       </FadeIn>
+
+      {/* --- CLIENT FEEDBACK SECTION --- */}
+      <FadeIn delay={0.6} className="w-full flex justify-center relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-full bg-gradient-to-r from-purple-900/10 via-transparent to-blue-900/10 blur-[100px] pointer-events-none" />
+
+        <section 
+          className="w-full max-w-7xl px-2 relative z-10"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          <div className="mb-12 flex flex-col sm:flex-row items-center justify-between px-4 text-center sm:text-left gap-4">
+            <div>
+              <h2 className="text-4xl md:text-6xl font-bold text-white mb-2 tracking-tight">
+                Client <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-200 to-blue-200">Love</span>
+              </h2>
+              <p className="text-gray-400 font-light text-lg">Stories from those who trusted the vision.</p>
+            </div>
+
+            {/* Manual Scroll Buttons */}
+            <div className="flex gap-3">
+              <Button 
+                variant="outline" 
+                size="icon"
+                onClick={scrollLeft}
+                className="rounded-full border-white/10 bg-black/20 hover:bg-white hover:text-black text-white h-12 w-12 transition-all"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </Button>
+              <Button 
+                variant="outline" 
+                size="icon"
+                onClick={scrollRight}
+                className="rounded-full border-white/10 bg-black/20 hover:bg-white hover:text-black text-white h-12 w-12 transition-all"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Scroll Container */}
+          <div 
+            ref={scrollRef}
+            className="flex overflow-x-auto pb-12 gap-6 px-4 no-scrollbar snap-x snap-mandatory scroll-smooth" 
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            <style jsx>{`
+              div::-webkit-scrollbar {
+                display: none;
+              }
+            `}</style>
+            {reviews.map((review) => (
+              <div key={review.id} className="min-w-[300px] md:min-w-[380px] snap-center">
+                <div className="bg-black/40 border border-white/5 rounded-[32px] p-8 h-full flex flex-col backdrop-blur-2xl hover:bg-white/5 hover:border-white/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+                  
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex gap-1">
+                      {[...Array(review.rating)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-white text-white" />
+                      ))}
+                    </div>
+                    <Quote className="h-6 w-6 text-white/20" />
+                  </div>
+
+                  <p className="text-gray-200 text-lg font-light italic mb-8 leading-relaxed flex-grow">
+                    "{review.text}"
+                  </p>
+                  
+                  <div className="flex items-center gap-4 pt-4 border-t border-white/5">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center text-white font-bold text-sm">
+                      {review.name.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="text-white font-medium">{review.name}</p>
+                      <p className="text-xs text-gray-500">{review.date}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* "Rate on Google" Card */}
+            <div className="min-w-[300px] md:min-w-[380px] snap-center flex items-center">
+               <div className="relative w-full h-full rounded-[32px] p-[1px] bg-gradient-to-br from-white/20 via-white/5 to-transparent overflow-hidden group">
+                 <div className="bg-black/80 w-full h-full rounded-[31px] p-8 flex flex-col items-center justify-center text-center backdrop-blur-3xl relative overflow-hidden">
+                    
+                    <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                    
+                    <Star className="h-12 w-12 text-white/80 mb-4 fill-white/20" />
+                    <h3 className="text-2xl font-bold text-white mb-2 relative z-10">Loved our work?</h3>
+                    <p className="text-gray-400 mb-8 text-sm relative z-10 leading-relaxed">
+                      Your review helps us reach more people and create more memories.
+                    </p>
+                    <a href="https://share.google/DVZQb1lbhDovXS2UZ" target="_blank" rel="noopener noreferrer" className="relative z-10 w-full">
+                      <Button className="w-full rounded-full bg-white text-black hover:bg-gray-200 py-6 font-bold text-base transition-transform group-hover:scale-105">
+                         Rate on Google
+                      </Button>
+                    </a>
+                 </div>
+               </div>
+            </div>
+          </div>
+        </section>
+      </FadeIn>
+
     </div>
   );
 }
