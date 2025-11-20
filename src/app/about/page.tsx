@@ -45,7 +45,7 @@ export default function AboutPage() {
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">Who Am I?</h1>
                 <p className="text-lg text-gray-300 leading-relaxed font-light mb-6">
-                  I am a freelance photographer based in the heart of <span className="text-white font-medium">Galle Fort</span>, where creativity meets culture and history. 
+                  I am a freelance photographer based in the heart of <span className="text-white font-medium">Galle, Galle Fort</span>, where creativity meets culture and history. 
                   With <span className="text-white font-medium border-b border-white/30">4 years of experience</span>, 
                   I specialize in portrait and creative photography, capturing emotion, expression, and unique perspectives through each frame.
                 </p>
@@ -128,7 +128,7 @@ export default function AboutPage() {
                   </li>
                   <li className="bg-white/5 rounded-2xl p-4 border border-white/5">
                     <h4 className="text-white font-medium">Mentorship</h4>
-                    <p className="text-sm text-gray-400 mt-1">Student of Boopathy Nalin Wickramage & Sajith Abegunawardhana.</p>
+                    <p className="text-sm text-gray-400 mt-1">Student of Boopathy Nalin Wickramage & Sajith Abeygunawardhana.</p>
                   </li>
                 </ul>
               </CardContent>
