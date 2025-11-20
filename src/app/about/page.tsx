@@ -27,7 +27,7 @@ export default function AboutPage() {
             <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 right-6">
               <h2 className="text-white font-bold text-2xl md:text-3xl mb-1">THARUL EGODAGE</h2>
               <p className="text-gray-300 text-sm md:text-base font-light flex items-center gap-2">
-                <Camera className="h-4 w-4" /> Freelance Photographer
+                <Camera className="h-4 w-4" /> Freelance Photographer & Visual Storyteller
               </p>
             </div>
           </div>
@@ -144,9 +144,7 @@ export default function AboutPage() {
                     "Event Coverage", 
                     "Visual Storytelling", 
                     "Artistic Direction", 
-                    "Lighting Mastery",
-                    "Adobe Lightroom",
-                    "Adobe Photoshop"
+                    "Lighting Mastery"
                   ].map((skill) => (
                     <span key={skill} className="px-4 py-2 rounded-full bg-black/40 border border-white/10 text-sm text-gray-200">
                       {skill}
