@@ -72,7 +72,7 @@ export default function ContactPage() {
         {/* Contact Form Component */}
         <FadeIn delay={0.3}>
           <div className="bg-white/5 backdrop-blur-md p-6 md:p-10 rounded-[32px] md:rounded-[40px] border border-white/10 shadow-2xl">
-            <h2 className="text-2xl font-bold text-white mb-6">Send a Message</h2>
+            <h2 className="text-2xl font-bold text-white mb-6">Send us an Inquire</h2>
             <ContactForm />
           </div>
         </FadeIn>
