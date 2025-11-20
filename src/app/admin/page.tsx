@@ -2,16 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "firebase/firestore";
-import { onAuthStateChanged, signOut } from "firebase/auth"; // Import Auth functions
-import { auth, db } from "@/lib/firebase"; // Import Auth instance
-import { useRouter } from "next/navigation"; // Import Router
+import { onAuthStateChanged, signOut } from "firebase/auth"; 
+import { auth, db } from "@/lib/firebase"; 
+import { useRouter } from "next/navigation"; 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-import { Trash2, Loader2, Mail, Calendar, Phone, LogOut } from "lucide-react"; 
+import { Trash2, Loader2, Mail, Calendar, Phone, LogOut, Clock } from "lucide-react"; 
 import Image from "next/image";
 
 interface PortfolioItem {
@@ -28,6 +28,7 @@ interface ContactMessage {
   name: string;
   email: string;
   phone?: string;
+  date?: string; // Added Date field to Interface
   message: string;
   createdAt: any;
 }
@@ -37,7 +38,7 @@ export default function AdminDashboard() {
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [uploading, setUploading] = useState(false);
-  const router = useRouter(); // Initialize router
+  const router = useRouter(); 
 
   const [formData, setFormData] = useState({
     title: "",
@@ -49,13 +50,10 @@ export default function AdminDashboard() {
 
   // --- AUTH & DATA FETCHING ---
   useEffect(() => {
-    // Check if user is logged in
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
-        // Not logged in? Redirect to Login
         router.push("/login");
       } else {
-        // Logged in? Fetch data
         Promise.all([fetchItems(), fetchMessages()]).then(() => setLoading(false));
       }
     });
@@ -146,7 +144,6 @@ export default function AdminDashboard() {
     <div className="container max-w-5xl mx-auto px-4 pt-24 md:pt-32 pb-16">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl md:text-3xl font-bold text-white">Dashboard</h1>
-        {/* Logout Button */}
         <Button variant="destructive" size="sm" onClick={handleLogout} className="rounded-full h-9 px-4">
            <LogOut className="h-4 w-4 mr-2" /> Logout
         </Button>
@@ -180,20 +177,27 @@ export default function AdminDashboard() {
                       <div className="flex justify-between items-start">
                         <CardTitle className="text-white text-lg truncate pr-2">{msg.name}</CardTitle>
                          <p className="text-[10px] text-gray-500 flex items-center gap-1 whitespace-nowrap">
-                          <Calendar className="h-3 w-3" />
+                          <Clock className="h-3 w-3" />
                           {formatDate(msg.createdAt)}
                         </p>
                       </div>
                       
-                      <div className="flex flex-wrap gap-3 mt-1">
-                        <CardDescription className="text-gray-400 flex items-center gap-2 text-sm">
+                      <div className="flex flex-wrap gap-3 mt-2">
+                        <CardDescription className="text-gray-400 flex items-center gap-2 text-sm bg-white/5 px-3 py-1 rounded-full border border-white/5">
                           <Mail className="h-3 w-3" /> <span className="truncate">{msg.email}</span>
                         </CardDescription>
                         
                         {msg.phone && (
-                          <CardDescription className="text-gray-400 flex items-center gap-2 text-sm border-l border-white/10 pl-3">
+                          <CardDescription className="text-gray-400 flex items-center gap-2 text-sm bg-white/5 px-3 py-1 rounded-full border border-white/5">
                             <Phone className="h-3 w-3" /> <span>{msg.phone}</span>
                           </CardDescription>
+                        )}
+
+                        {/* Display Requested Event Date */}
+                        {msg.date && (
+                           <CardDescription className="text-green-400 flex items-center gap-2 text-sm bg-green-500/10 px-3 py-1 rounded-full border border-green-500/20 font-medium">
+                             <Calendar className="h-3 w-3" /> <span>Event: {msg.date}</span>
+                           </CardDescription>
                         )}
                       </div>
 

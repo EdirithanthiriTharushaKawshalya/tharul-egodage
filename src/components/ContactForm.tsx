@@ -22,7 +22,8 @@ export default function ContactForm() {
     const data = {
       name: formData.get("name"),
       email: formData.get("email"),
-      phone: formData.get("phone"), // Added Phone Number
+      phone: formData.get("phone"),
+      date: formData.get("date"), // Added Event Date
       message: formData.get("message"),
       createdAt: new Date().toISOString(),
     };
@@ -66,16 +67,30 @@ export default function ContactForm() {
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="email" className="text-gray-300 ml-1">Email</Label>
-        <Input 
-          id="email" 
-          name="email" 
-          type="email" 
-          required 
-          placeholder="john@example.com" 
-          className="bg-black/30 border-white/10 text-white focus:border-white/30 focus:bg-black/50 h-12 rounded-2xl transition-all"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-gray-300 ml-1">Email</Label>
+          <Input 
+            id="email" 
+            name="email" 
+            type="email" 
+            required 
+            placeholder="john@example.com" 
+            className="bg-black/30 border-white/10 text-white focus:border-white/30 focus:bg-black/50 h-12 rounded-2xl transition-all"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="date" className="text-gray-300 ml-1">Event Date</Label>
+          <Input 
+            id="date" 
+            name="date" 
+            type="date" 
+            required 
+            className="bg-black/30 border-white/10 text-white focus:border-white/30 focus:bg-black/50 h-12 rounded-2xl transition-all"
+            style={{ colorScheme: "dark" }} // Ensures the calendar icon is white
+          />
+        </div>
       </div>
 
       <div className="space-y-2">
