@@ -25,11 +25,6 @@ export default function AboutPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80" />
             
             <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 right-6">
-              <div className="flex items-center gap-2 mb-3">
-                <Badge className="bg-white text-black hover:bg-white/90 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider">
-                  Based in Galle Fort
-                </Badge>
-              </div>
               <h2 className="text-white font-bold text-2xl md:text-3xl mb-1">THARUL EGODAGE</h2>
               <p className="text-gray-300 text-sm md:text-base font-light flex items-center gap-2">
                 <Camera className="h-4 w-4" /> Freelance Photographer
