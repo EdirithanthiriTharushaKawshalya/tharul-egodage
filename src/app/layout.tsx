@@ -8,12 +8,32 @@ import { ReactNode } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.tharulegodage.com'),
   title: {
-    default: "THARUL EGODAGE | Portfolio",
-    template: "%s | THARUL EGODAGE",
+    default: "Tharul Egodage | Professional Photographer Galle",
+    template: "%s | Tharul Egodage",
   },
-  description: "Professional photography portfolio specializing in weddings, events, and portraits.",
-  keywords: ["Photography", "Portfolio", "Weddings", "Events", "Portraits"],
+  description: "Tharul Egodage is a professional photographer based in Galle, Sri Lanka, specializing in weddings, events, portraits, and fashion photography.",
+  keywords: ["Tharul Egodage", "Photographer Galle", "Wedding Photography Sri Lanka", "Event Photographer", "Portrait Photography", "Fashion Photographer"],
+  openGraph: {
+    title: "Tharul Egodage Photography",
+    description: "Capturing life's raw emotions. Professional wedding and event photographer based in Galle Fort.",
+    url: "https://www.tharulegodage.com",
+    siteName: "Tharul Egodage Photography",
+    images: [
+      {
+        url: "/og-image.jpg", // You should add an image named og-image.jpg to your public folder
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
