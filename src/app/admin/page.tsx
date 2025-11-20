@@ -2,14 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth"; // Import Auth functions
+import { auth, db } from "@/lib/firebase"; // Import Auth instance
+import { useRouter } from "next/navigation"; // Import Router
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-import { Trash2, Loader2, Mail, Calendar, Phone } from "lucide-react"; 
+import { Trash2, Loader2, Mail, Calendar, Phone, LogOut } from "lucide-react"; 
 import Image from "next/image";
 
 interface PortfolioItem {
@@ -35,18 +37,31 @@ export default function AdminDashboard() {
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [uploading, setUploading] = useState(false);
+  const router = useRouter(); // Initialize router
 
   const [formData, setFormData] = useState({
     title: "",
-    category: "portraits", // Changed default to match first item in your list
+    category: "portraits",
     image: "",
     link: "",
     description: "",
   });
 
+  // --- AUTH & DATA FETCHING ---
   useEffect(() => {
-    Promise.all([fetchItems(), fetchMessages()]).then(() => setLoading(false));
-  }, []);
+    // Check if user is logged in
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        // Not logged in? Redirect to Login
+        router.push("/login");
+      } else {
+        // Logged in? Fetch data
+        Promise.all([fetchItems(), fetchMessages()]).then(() => setLoading(false));
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
 
   const fetchItems = async () => {
     try {
@@ -73,6 +88,12 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
+  };
+
+  // --- ACTIONS ---
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push("/login");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -125,6 +146,10 @@ export default function AdminDashboard() {
     <div className="container max-w-5xl mx-auto px-4 pt-24 md:pt-32 pb-16">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl md:text-3xl font-bold text-white">Dashboard</h1>
+        {/* Logout Button */}
+        <Button variant="destructive" size="sm" onClick={handleLogout} className="rounded-full h-9 px-4">
+           <LogOut className="h-4 w-4 mr-2" /> Logout
+        </Button>
       </div>
 
       <Tabs defaultValue="messages" className="w-full">
@@ -223,7 +248,6 @@ export default function AdminDashboard() {
                       value={formData.category}
                       onChange={(e) => setFormData({...formData, category: e.target.value})}
                     >
-                      {/* UPDATED ORDER */}
                       <option value="portraits">Portraits</option>
                       <option value="birthdays">Birthdays</option>
                       <option value="weddings">Weddings</option>

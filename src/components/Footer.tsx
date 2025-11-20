@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Facebook, Instagram, Mail, MapPin, Phone, ArrowRight } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, Phone, ArrowRight, Settings } from "lucide-react"; // Added Settings Icon
 
 export default function Footer() {
   return (
@@ -99,9 +99,14 @@ export default function Footer() {
         {/* --- BOTTOM SECTION: Copyright & Legal --- */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500 relative z-10">
           <p>&copy; {new Date().getFullYear()} THARUL EGODAGE Photography. All rights reserved.</p>
-          <div className="flex gap-6">
+          <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
+            
+            {/* ADMIN LOGIN BUTTON */}
+            <Link href="/login" aria-label="Admin Login">
+              <Settings className="h-4 w-4 text-gray-600 hover:text-white transition-colors cursor-pointer" />
+            </Link>
           </div>
         </div>
         
