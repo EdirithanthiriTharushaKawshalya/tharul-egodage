@@ -28,13 +28,14 @@ interface ContactMessage {
   name: string;
   email: string;
   phone?: string;
-  date?: string; // Added Date field to Interface
+  date?: string; 
   message: string;
   createdAt: any;
 }
 
 export default function AdminDashboard() {
-  const [loading, setLoading] = useState(true);
+  // 1. Start loading as TRUE by default
+  const [authLoading, setAuthLoading] = useState(true); 
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -52,9 +53,11 @@ export default function AdminDashboard() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
+        // 2. If not logged in, redirect IMMEDIATELY
         router.push("/login");
       } else {
-        Promise.all([fetchItems(), fetchMessages()]).then(() => setLoading(false));
+        // 3. Only if logged in, fetch data and stop loading
+        Promise.all([fetchItems(), fetchMessages()]).then(() => setAuthLoading(false));
       }
     });
 
@@ -132,14 +135,16 @@ export default function AdminDashboard() {
     });
   };
 
-  if (loading) {
+  // 4. Show Loading Spinner while checking Auth (Blocks the dashboard UI)
+  if (authLoading) {
     return (
-      <div className="flex h-screen items-center justify-center text-white">
+      <div className="flex h-screen items-center justify-center text-white bg-black">
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
     );
   }
 
+  // 5. Only render this if authLoading is false (meaning User IS logged in)
   return (
     <div className="container max-w-5xl mx-auto px-4 pt-24 md:pt-32 pb-16">
       <div className="flex justify-between items-center mb-8">
