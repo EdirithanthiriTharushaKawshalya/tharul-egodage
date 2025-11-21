@@ -28,43 +28,19 @@ interface PortfolioItem {
   description: string;
 }
 
-// --- MOCK REVIEWS DATA ---
-const reviews = [
-  {
-    id: 1,
-    name: "Sarah Jenkins",
-    rating: 5,
-    text: "Tharul captured our wedding beautifully! The photos are stunning and he made us feel so comfortable throughout the day.",
-    date: "2 months ago"
-  },
-  {
-    id: 2,
-    name: "David Perera",
-    rating: 5,
-    text: "Highly recommend for any event coverage. Professional, punctual, and the final edits were delivered faster than expected.",
-    date: "1 month ago"
-  },
-  {
-    id: 3,
-    name: "Michelle & Tom",
-    rating: 5,
-    text: "We did a couple shoot in Galle Fort and the results are magical. He knows all the best hidden spots for great lighting!",
-    date: "3 weeks ago"
-  },
-  {
-    id: 4,
-    name: "TechCorp Lanka",
-    rating: 5,
-    text: "Excellent corporate event photography. Captured the essence of our summit perfectly.",
-    date: "5 months ago"
-  }
-];
+interface ReviewItem {
+  id: string;
+  name: string;
+  rating: number;
+  text: string;
+  date: string;
+}
 
 export default function Home() {
   const [items, setItems] = useState<PortfolioItem[]>([]);
+  const [reviews, setReviews] = useState<ReviewItem[]>([]); // New State
   const [loading, setLoading] = useState(true);
   
-  // Ref for the review scroll container
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -73,44 +49,52 @@ export default function Home() {
   );
 
   useEffect(() => {
-    const fetchFeatured = async () => {
+    const fetchData = async () => {
       try {
-        const q = query(collection(db, "portfolio"), limit(6));
-        const querySnapshot = await getDocs(q);
-        
-        const data: PortfolioItem[] = [];
-        querySnapshot.forEach((doc) => {
-          data.push({ id: doc.id, ...doc.data() } as PortfolioItem);
+        // Fetch Portfolio
+        const pQuery = query(collection(db, "portfolio"), limit(6));
+        const pSnapshot = await getDocs(pQuery);
+        const pData: PortfolioItem[] = [];
+        pSnapshot.forEach((doc) => {
+          pData.push({ id: doc.id, ...doc.data() } as PortfolioItem);
         });
-        setItems(data);
+        setItems(pData);
+
+        // Fetch Reviews
+        const rSnapshot = await getDocs(collection(db, "reviews"));
+        const rData: ReviewItem[] = [];
+        rSnapshot.forEach((doc) => {
+          rData.push({ id: doc.id, ...doc.data() } as ReviewItem);
+        });
+        setReviews(rData);
+
       } catch (error) {
-        console.error("Error fetching featured shots:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchFeatured();
+    fetchData();
   }, []);
 
   // Auto Scroll Logic for Reviews
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || reviews.length === 0) return;
 
     const interval = setInterval(() => {
       if (scrollRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-        // If we are near the end, scroll back to start, else scroll right
         if (scrollLeft + clientWidth >= scrollWidth - 10) {
             scrollRef.current.scrollTo({ left: 0, behavior: "smooth" });
         } else {
             scrollRef.current.scrollBy({ left: 320, behavior: "smooth" });
         }
       }
-    }, 2000); // 2 seconds
+    }, 2000);
 
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isPaused, reviews.length]);
 
   const scrollLeft = () => {
     if (scrollRef.current) {
@@ -249,7 +233,6 @@ export default function Home() {
               <p className="text-gray-400 font-light text-lg">Stories from those who trusted the vision.</p>
             </div>
 
-            {/* Manual Scroll Buttons */}
             <div className="flex gap-3">
               <Button 
                 variant="outline" 
@@ -270,7 +253,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Scroll Container */}
           <div 
             ref={scrollRef}
             className="flex overflow-x-auto pb-12 gap-6 px-4 no-scrollbar snap-x snap-mandatory scroll-smooth" 
@@ -281,13 +263,14 @@ export default function Home() {
                 display: none;
               }
             `}</style>
+            
+            {/* Dynamic Reviews from Firebase */}
             {reviews.map((review) => (
               <div key={review.id} className="min-w-[300px] md:min-w-[380px] snap-center">
                 <div className="bg-black/40 border border-white/5 rounded-[32px] p-8 h-full flex flex-col backdrop-blur-2xl hover:bg-white/5 hover:border-white/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
-                  
                   <div className="flex items-start justify-between mb-6">
                     <div className="flex gap-1">
-                      {[...Array(review.rating)].map((_, i) => (
+                      {[...Array(review.rating || 5)].map((_, i) => (
                         <Star key={i} className="h-4 w-4 fill-white text-white" />
                       ))}
                     </div>
@@ -299,7 +282,7 @@ export default function Home() {
                   </p>
                   
                   <div className="flex items-center gap-4 pt-4 border-t border-white/5">
-                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center text-white font-bold text-sm">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center text-white font-bold text-sm uppercase">
                       {review.name.charAt(0)}
                     </div>
                     <div>
@@ -315,9 +298,7 @@ export default function Home() {
             <div className="min-w-[300px] md:min-w-[380px] snap-center flex items-center">
                <div className="relative w-full h-full rounded-[32px] p-[1px] bg-gradient-to-br from-white/20 via-white/5 to-transparent overflow-hidden group">
                  <div className="bg-black/80 w-full h-full rounded-[31px] p-8 flex flex-col items-center justify-center text-center backdrop-blur-3xl relative overflow-hidden">
-                    
                     <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                    
                     <Star className="h-12 w-12 text-white/80 mb-4 fill-white/20" />
                     <h3 className="text-2xl font-bold text-white mb-2 relative z-10">Loved our work?</h3>
                     <p className="text-gray-400 mb-8 text-sm relative z-10 leading-relaxed">
