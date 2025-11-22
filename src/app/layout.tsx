@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.tharulegodage.com'),
   title: {
-    default: "Tharul Egodage | Professional Photographer Galle",
+    default: "Tharul Egodage | Freelance Photographer & Visual Storyteller",
     template: "%s | Tharul Egodage",
   },
   description: "Tharul Egodage is a professional photographer based in Galle, Sri Lanka, specializing in weddings, events, portraits, and fashion photography.",

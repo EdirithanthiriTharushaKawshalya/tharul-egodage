@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-import { Trash2, Loader2, Mail, Calendar, Phone, LogOut, Clock, Star, MessageSquare } from "lucide-react"; 
+import { Trash2, Loader2, Mail, Calendar, Phone, LogOut, Clock, Star } from "lucide-react"; 
 import Image from "next/image";
 
 interface PortfolioItem {
@@ -45,7 +45,7 @@ export default function AdminDashboard() {
   const [authLoading, setAuthLoading] = useState(true); 
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
-  const [reviews, setReviews] = useState<ReviewItem[]>([]); // New State for Reviews
+  const [reviews, setReviews] = useState<ReviewItem[]>([]); 
   const [uploading, setUploading] = useState(false);
   const router = useRouter(); 
 
@@ -349,7 +349,7 @@ export default function AdminDashboard() {
           </Card>
         </TabsContent>
 
-        {/* NEW: REVIEWS TAB */}
+        {/* REVIEWS TAB - UPDATED WITH DATE PICKER */}
         <TabsContent value="reviews">
           <div className="space-y-8">
             {/* Add Review Form */}
@@ -371,13 +371,15 @@ export default function AdminDashboard() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-gray-300 ml-1">Date/Timeframe</Label>
+                      <Label className="text-gray-300 ml-1">Date</Label>
+                      {/* CHANGED TO DATE PICKER */}
                       <Input 
                         required
+                        type="date"
                         value={reviewData.date}
                         onChange={(e) => setReviewData({...reviewData, date: e.target.value})}
                         className="bg-black/30 border-white/10 text-white rounded-xl" 
-                        placeholder="2 months ago" 
+                        style={{ colorScheme: "dark" }} // Ensures calendar icon is visible
                       />
                     </div>
                     <div className="space-y-2">
