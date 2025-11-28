@@ -13,9 +13,6 @@ export default function AboutPage() {
         {/* Image Side */}
         <FadeIn delay={0.1}>
           <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[32px] md:rounded-[40px] bg-gray-900 border border-white/10 group shadow-2xl sticky top-32">
-            {/* FIX: The src must start with '/' which points to the public folder.
-               Ensure IMG_3092.JPG is inside the 'public' folder in your project root.
-            */}
             <Image
               src="/IMG_3092.PNG"
               alt="Photographer in Galle Fort"
@@ -40,12 +37,11 @@ export default function AboutPage() {
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">Who Am I?</h1>
                 <p className="text-lg text-gray-300 leading-relaxed font-light mb-6">
-                  I am a freelance photographer based in the heart of <span className="text-white font-medium">Galle, Galle Fort</span>, where creativity meets culture and history. 
-                  With <span className="text-white font-medium border-b border-white/30">4 years of experience</span>, 
-                  I specialize in portrait and creative photography, capturing emotion, expression, and unique perspectives through each frame.
+                  I'm a freelance photographer and visual storyteller based in <span className="text-white font-medium">Galle Fort</span>, with <span className="text-white font-medium border-b border-white/30">5 years of experience</span> in the industry. 
+                  I specialize in portrait and creative photography, capturing emotion, character and meaningful moments through every frame.
                 </p>
                 <p className="text-lg text-gray-300 leading-relaxed font-light">
-                  To me, photography is more than a craft. It is my way of preserving stories that need to be seen and remembered.
+                  For me, photography is more than just art, it's a way of preserving stories that deserve to be seen and remembered.
                 </p>
               </div>
             </div>
@@ -56,12 +52,12 @@ export default function AboutPage() {
                 <Heart className="h-5 w-5 text-gray-400" /> My Background
               </h3>
               <p className="text-base text-gray-400 leading-relaxed font-light mb-4">
-                Creativity has always been part of my world. Born into a family proud of its artistic spirit—my father, 
-                an artist and curator, and my mother, a hotelier—I developed an eye for detail and culture early on.
+                Creativity has always been part of my life. Born into a family proud of its artistic spirit my father, 
+                an artist and curator, and my mother, a hotelier I developed an eye for detail, culture and storytelling early on.
               </p>
               <p className="text-base text-gray-400 leading-relaxed font-light">
-                Growing up in Galle Fort, a UNESCO World Heritage Site packed with color and architecture, 
-                offered endless inspiration to see the world from different perspectives.
+                Growing up in Galle Fort, a UNESCO World Heritage Site, surrounded by its rich history, vibrant architecture and colorful streets, 
+                inspired me to see the world from unique perspectives and express it through photography.
               </p>
             </div>
           </div>
@@ -86,14 +82,14 @@ export default function AboutPage() {
                 <div className="relative pl-8">
                   <div className="absolute left-0 top-1.5 h-6 w-6 bg-black rounded-full border-2 border-white z-10" />
                   <h4 className="text-white font-semibold text-lg">Freelance Photographer</h4>
-                  <p className="text-sm text-gray-500 mb-1">2021 — Present</p>
+                  <p className="text-sm text-gray-500 mb-1">2020 — Present</p>
                   <p className="text-gray-400 text-sm">Portraits, event coverage, and creative storytelling for personal and client-based projects.</p>
                 </div>
 
                 <div className="relative pl-8">
                   <div className="absolute left-0 top-1.5 h-6 w-6 bg-gray-800 rounded-full border border-white/30 z-10" />
                   <h4 className="text-white font-semibold text-lg">Dharmasoka College Photographic Society</h4>
-                  <p className="text-sm text-gray-500 mb-1">2021 — Present</p>
+                  <p className="text-sm text-gray-500 mb-1">2020 — Present</p>
                   <p className="text-gray-400 text-sm">Main Senior Photographer & Project Coordinator.</p>
                 </div>
 
@@ -116,16 +112,28 @@ export default function AboutPage() {
                 <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                   <GraduationCap className="h-6 w-6 text-white" /> Education & Mentorship
                 </h3>
-                <ul className="space-y-4">
-                  <li className="bg-white/5 rounded-2xl p-4 border border-white/5">
-                    <h4 className="text-white font-medium">Private Diploma in Photography</h4>
-                    <p className="text-sm text-gray-400 mt-1">Foundations in lighting, composition, and editing.</p>
-                  </li>
-                  <li className="bg-white/5 rounded-2xl p-4 border border-white/5">
-                    <h4 className="text-white font-medium">Mentorship</h4>
-                    <p className="text-sm text-gray-400 mt-1">Student of Boopathy Nalin Wickramage & Sajith Abeygunawardhana.</p>
-                  </li>
-                </ul>
+                <div className="space-y-4">
+                  <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      My interest in photography was first kindled at the Dharmasoka College Photographic Society, which gave me a purpose to capture moments, to preserve time and to tell stories.
+                    </p>
+                  </div>
+                  <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      I continued my formal training under Boopathy Nalin Wickramage and later refined my craft under Sajith Abeygunawardhana.
+                    </p>
+                  </div>
+                  <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      Currently, I am further advancing my skills at Lal Hegoda's Hegoda School of Photography, gaining new insights each day and continuously shaping the way I observe the world.
+                    </p>
+                  </div>
+                  <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      Each mentor and experience has contributed to my development as a photographer both technically and artistically.
+                    </p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </FadeIn>
