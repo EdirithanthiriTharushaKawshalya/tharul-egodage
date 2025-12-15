@@ -82,14 +82,14 @@ export default function AboutPage() {
                 <div className="relative pl-8">
                   <div className="absolute left-0 top-1.5 h-6 w-6 bg-black rounded-full border-2 border-white z-10" />
                   <h4 className="text-white font-semibold text-lg">Freelance Photographer</h4>
-                  <p className="text-sm text-gray-500 mb-1">2020 — Present</p>
+                  <p className="text-sm text-gray-500 mb-1">2021 — Present</p>
                   <p className="text-gray-400 text-sm">Portraits, event coverage, and creative storytelling for personal and client-based projects.</p>
                 </div>
 
                 <div className="relative pl-8">
                   <div className="absolute left-0 top-1.5 h-6 w-6 bg-gray-800 rounded-full border border-white/30 z-10" />
                   <h4 className="text-white font-semibold text-lg">Dharmasoka College Photographic Society</h4>
-                  <p className="text-sm text-gray-500 mb-1">2020 — Present</p>
+                  <p className="text-sm text-gray-500 mb-1">2021 — Present</p>
                   <p className="text-gray-400 text-sm">Main Senior Photographer & Project Coordinator.</p>
                 </div>
 
