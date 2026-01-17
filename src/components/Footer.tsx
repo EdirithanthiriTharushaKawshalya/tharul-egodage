@@ -98,7 +98,7 @@ export default function Footer() {
 
         {/* --- BOTTOM SECTION: Copyright & Legal --- */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500 relative z-10">
-          <p>&copy; {new Date().getFullYear()} THARUL EGODAGE Photography. All rights reserved.</p>
+          <p>&copy; THARUL EGODAGE Photography. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
